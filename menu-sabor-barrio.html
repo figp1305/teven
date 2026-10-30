@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabor de Barrio | Menú Digital</title>
+  <link rel="stylesheet" href="styles-mini.css">
+</head>
+<body class="menu-sabor-barrio">
+
+  <!-- HEADER APP -->
+  <header class="menu-header">
+    <div>
+      <h1>Sabor de Barrio</h1>
+      <p>Hamburguesas · Medellín</p>
+    </div>
+    <div class="cart-icon" onclick="toggleCart()">
+      🛒 <span class="cart-count" id="cartCount">0</span>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="menu-hero">
+    <div class="menu-hero-content">
+      <h2>Disfruta sin salir de casa</h2>
+      <p>Pedidos en Medellín y sectores cercanos.</p>
+      <a href="#menu-productos" class="btn-menu">VER MENÚ</a>
+    </div>
+  </section>
+
+  <!-- CATEGORÍAS (Sticky) -->
+  <nav class="menu-categories">
+    <a href="#hamburguesas" class="cat-link active">Hamburguesas</a>
+    <a href="#perros" class="cat-link">Perros Calientes</a>
+    <a href="#combos" class="cat-link">Combos</a>
+    <a href="#bebidas" class="cat-link">Bebidas</a>
+  </nav>
+
+  <!-- PRODUCTOS -->
+  <main class="menu-productos" id="menu-productos">
+    
+    <!-- Categoría: Hamburguesas -->
+    <h3 id="hamburguesas" class="menu-cat-title">Hamburguesas</h3>
+    <div class="productos-grid">
+      
+      <div class="producto-card">
+        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=200&q=80" alt="Hamburguesa Clásica">
+        <div class="producto-info">
+          <h4>Hamburguesa Clásica</h4>
+          <p>Carne, queso, lechuga, tomate y salsa de la casa.</p>
+          <span class="producto-precio">$18.000</span>
+          <button class="btn-agregar" onclick="addToCart('Hamburguesa Clásica', 18000)">+ Agregar</button>
+        </div>
+      </div>
+
+      <div class="producto-card">
+        <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eb50c4e?auto=format&fit=crop&w=200&q=80" alt="Hamburguesa Especial">
+        <div class="producto-info">
+          <h4>Hamburguesa Especial</h4>
+          <p>Carne, doble queso, tocineta, cebolla caramelizada.</p>
+          <span class="producto-precio">$25.000</span>
+          <button class="btn-agregar" onclick="addToCart('Hamburguesa Especial', 25000)">+ Agregar</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Categoría: Combos -->
+    <h3 id="combos" class="menu-cat-title">Combos</h3>
+    <div class="productos-grid">
+      
+      <div class="producto-card">
+        <img src="https://images.unsplash.com/photo-1610614819513-58e34989848b?auto=format&fit=crop&w=200&q=80" alt="Combo Clásico">
+        <div class="producto-info">
+          <h4>Combo Clásico</h4>
+          <p>Hamburguesa clásica, papas y bebida.</p>
+          <span class="producto-precio">$25.000</span>
+          <button class="btn-agregar" onclick="addToCart('Combo Clásico', 25000)">+ Agregar</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Categoría: Bebidas -->
+    <h3 id="bebidas" class="menu-cat-title">Bebidas</h3>
+    <div class="productos-grid">
+      
+      <div class="producto-card">
+        <img src="https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?auto=format&fit=crop&w=200&q=80" alt="Gaseosa">
+        <div class="producto-info">
+          <h4>Gaseosa Personal</h4>
+          <p>Gaseosa personal.</p>
+          <span class="producto-precio">$5.000</span>
+          <button class="btn-agregar" onclick="addToCart('Gaseosa', 5000)">+ Agregar</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- MODAL DEL CARRITO (Bottom Sheet) -->
+  <div class="cart-modal-overlay" id="cartModal" onclick="toggleCart()">
+    <div class="cart-modal" onclick="event.stopPropagation()">
+      <button class="close-cart" onclick="toggleCart()">✕</button>
+      <h3>Tu Pedido</h3>
+      
+      <div class="cart-items-list" id="cartItemsList">
+        <p class="empty-cart-msg">No has agregado productos aún.</p>
+      </div>
+
+      <div class="cart-total">
+        <strong>Total:</strong> <span id="cartTotal">$0</span>
+      </div>
+
+      <form class="checkout-form" id="checkoutForm" onsubmit="sendOrder(event)">
+        <input type="text" id="custName" placeholder="Tu nombre completo" required>
+        <input type="text" id="custAddress" placeholder="Dirección o barrio" required>
+        <select id="custPayment">
+          <option value="Efectivo">Pago en efectivo</option>
+          <option value="Transferencia">Transferencia / Nequi</option>
+          <option value="Tarjeta">Tarjeta (contra entrega)</option>
+        </select>
+        <textarea id="custNotes" placeholder="Observaciones (opcional)"></textarea>
+        <button type="submit" class="btn-send-order">ENVIAR PEDIDO POR WHATSAPP</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- INFO DEL NEGOCIO -->
+  <section class="menu-footer-info">
+    <p><strong>Horario:</strong> Martes a domingo, 5:00 p. m. a 11:00 p. m.</p>
+    <p><strong>Zona:</strong> Laureles y sectores cercanos</p>
+    <p><strong>Pagos:</strong> Efectivo, Transferencia, Tarjeta</p>
+  </section>
+
+  <footer class="mini-footer">
+    <p>Menú digital creado por <strong>Te Ven</strong>.</p>
+  </footer>
+
+  <script>
+    let cart = [];
+
+    function toggleCart() {
+      document.getElementById('cartModal').classList.toggle('active');
+    }
+
+    function addToCart(name, price) {
+      const existing = cart.find(item => item.name === name);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({ name, price, qty: 1 });
+      }
+      updateCartUI();
+      document.getElementById('cartCount').style.transform = 'scale(1.5)';
+      setTimeout(() => document.getElementById('cartCount').style.transform = 'scale(1)', 200);
+    }
+
+    function updateCartUI() {
+      const list = document.getElementById('cartItemsList');
+      const countEl = document.getElementById('cartCount');
+      const totalEl = document.getElementById('cartTotal');
+      
+      list.innerHTML = '';
+      let total = 0;
+      let totalItems = 0;
+
+      if (cart.length === 0) {
+        list.innerHTML = '<p class="empty-cart-msg">No has agregado productos aún.</p>';
+      } else {
+        cart.forEach((item, index) => {
+          total += item.price * item.qty;
+          totalItems += item.qty;
+          list.innerHTML += `
+            <div class="cart-item">
+              <div>
+                <strong>${item.qty}x ${item.name}</strong>
+                <span>$${(item.price * item.qty).toLocaleString('es-CO')}</span>
+              </div>
+              <button type="button" onclick="removeFromCart(${index})" style="background:none; border:none; color:#EF4444; cursor:pointer; font-weight:bold; font-size:1.2rem;">✕</button>
+            </div>
+          `;
+        });
+      }
+
+      countEl.innerText = totalItems;
+      totalEl.innerText = '$' + total.toLocaleString('es-CO');
+    }
+
+    function removeFromCart(index) {
+      if (cart[index].qty > 1) {
+        cart[index].qty--;
+      } else {
+        cart.splice(index, 1);
+      }
+      updateCartUI();
+    }
+
+    function sendOrder(e) {
+      e.preventDefault();
+      if (cart.length === 0) {
+        alert("Agrega al menos un producto a tu pedido.");
+        return;
+      }
+
+      const name = document.getElementById('custName').value;
+      const address = document.getElementById('custAddress').value;
+      const payment = document.getElementById('custPayment').value;
+      const notes = document.getElementById('custNotes').value;
+
+      let total = 0;
+      let msg = "Hola, quiero realizar este pedido en Sabor de Barrio:%0A%0A";
+      
+      cart.forEach(item => {
+        msg += `${item.qty} x ${item.name} - $${(item.price * item.qty).toLocaleString('es-CO')}%0A`;
+        total += item.price * item.qty;
+      });
+
+      msg += `%0ASubtotal aproximado: $${total.toLocaleString('es-CO')}%0A%0A`;
+      msg += `Nombre: ${name}%0A`;
+      msg += `Dirección: ${address}%0A`;
+      msg += `Método de pago: ${payment}%0A`;
+      if(notes.trim()) msg += `Observaciones: ${notes}%0A`;
+
+      const waNumber = "573192757931";
+      const waUrl = `https://wa.me/${waNumber}?text=${msg}`;
+      window.open(waUrl, '_blank');
+    }
+  </script>
+
+</body>
+</html>

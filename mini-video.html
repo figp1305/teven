@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hamburguesas El Corral | Te Ven</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles-mini.css">
+</head>
+<body class="mini-video-page">
+
+  <!-- Fondo difuminado de la página -->
+  <div class="video-bg-blur"></div>
+
+  <!-- Encabezado flotante -->
+  <header class="video-header">
+    <h1>Hamburguesas El Corral</h1>
+    <p>Medellín, Colombia</p>
+  </header>
+
+  <!-- Contenedor principal tipo "Reel" -->
+  <main class="video-reel-container">
+    
+    <!-- El Video Vertical -->
+    <div class="video-wrapper">
+      <video 
+        src="assets/video-ejemplo.mp4" 
+        autoplay 
+        muted 
+        loop 
+        playsinline 
+        poster="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80">
+      </video>
+      
+      <!-- Texto superpuesto en el video (opcional) -->
+      <div class="video-overlay-text">
+        <span class="tag-video">🔥 Promoción</span>
+        <h2>Mira cómo trabajamos</h2>
+      </div>
+    </div>
+
+    <!-- Información y Botón debajo del video -->
+    <div class="video-info-card">
+      <p class="video-desc">Carne 100% de res, pan artesanal y los mejores ingredientes. ¿Quieres conocer precios o disponibilidad?</p>
+      
+      <div class="video-meta">
+        <span>📍 Medellín (Zona Sur)</span>
+        <span>🕒 12:00 pm - 10:00 pm</span>
+      </div>
+
+      <a href="https://wa.me/573192757931?text=Hola,%20vi%20Hamburguesas%20El%20Corral%20en%20Te%20Ven%20y%20quiero%20hacer%20un%20pedido." class="btn-wa-video" target="_blank" rel="noopener">
+        QUIERO PEDIR POR WHATSAPP
+      </a>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="mini-footer">
+    <p>La atención, disponibilidad, precios y condiciones del servicio dependen directamente del negocio.</p>
+    <p class="mini-brand">Campaña creada por <strong>Te Ven</strong> · Publicidad para negocios</p>
+  </footer>
+
+  <!-- Botón fijo inferior móvil -->
+  <a href="https://wa.me/573192757931?text=Hola,%20vi%20tu%20negocio%20en%20Te%20Ven" class="sticky-wa-mini" target="_blank" rel="noopener">ESCRIBIR POR WHATSAPP</a>
+
+</body>
+</html>

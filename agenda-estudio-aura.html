@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agenda tu cita en Estudio Aura | Te Ven Agenda</title>
+  <link rel="stylesheet" href="styles-mini.css">
+</head>
+<body class="agenda-aura-page">
+
+  <!-- HEADER ESTILO APP -->
+  <header class="agenda-header">
+    <div class="agenda-header-top">
+      <div>
+        <h1>Estudio Aura</h1>
+        <p>Bogotá · Atención con cita previa</p>
+      </div>
+      <a href="https://wa.me/573192757931?text=Hola,%20vi%20Estudio%20Aura%20en%20Te%20Ven." class="header-wa-btn" target="_blank" rel="noopener">
+        💬 Soporte
+      </a>
+    </div>
+  </header>
+
+  <main class="agenda-main">
+    <!-- HERO -->
+    <section class="agenda-hero">
+      <h2>Reserva tu cita</h2>
+      <p>Cejas, pestañas y manicure. Elige el servicio y consulta los horarios disponibles.</p>
+    </section>
+
+    <!-- PASO 1: SELECCIÓN DE SERVICIO -->
+    <section class="agenda-step">
+      <h3><span class="step-badge">1</span> Elige tu servicio</h3>
+      
+      <div class="agenda-services">
+        <label class="service-option">
+          <input type="radio" name="servicio" value="Diseño de cejas" data-duration="45 min" data-price="$35.000" onchange="selectService(this)">
+          <div class="service-option-content">
+            <div class="service-option-title">Diseño de cejas</div>
+            <div class="service-option-meta">45 minutos · $35.000</div>
+          </div>
+        </label>
+
+        <label class="service-option">
+          <input type="radio" name="servicio" value="Lifting de pestañas" data-duration="60 min" data-price="$70.000" onchange="selectService(this)">
+          <div class="service-option-content">
+            <div class="service-option-title">Lifting de pestañas</div>
+            <div class="service-option-meta">60 minutos · $70.000</div>
+          </div>
+        </label>
+
+        <label class="service-option">
+          <input type="radio" name="servicio" value="Manicure semipermanente" data-duration="90 min" data-price="$65.000" onchange="selectService(this)">
+          <div class="service-option-content">
+            <div class="service-option-title">Manicure semipemanente</div>
+            <div class="service-option-meta">90 minutos · $65.000</div>
+          </div>
+        </label>
+      </div>
+    </section>
+
+    <!-- PASO 2: FECHA Y HORA -->
+    <section class="agenda-step" id="stepDateTime" style="display: none;">
+      <h3><span class="step-badge">2</span> Selecciona fecha y hora</h3>
+      
+      <div class="date-selector">
+        <label>¿Qué día te queda mejor?</label>
+        <input type="date" id="bookingDate" min="" required onchange="renderTimeSlots()">
+      </div>
+
+      <div class="time-slots-grid" id="timeSlots">
+        <p class="info-text">Selecciona una fecha para ver los horarios disponibles.</p>
+      </div>
+    </section>
+
+    <!-- PASO 3: FORMULARIO -->
+    <section class="agenda-step" id="stepForm" style="display: none;">
+      <h3><span class="step-badge">3</span> Tus datos</h3>
+      
+      <form class="agenda-form" id="bookingForm" onsubmit="submitBooking(event)">
+        <div class="form-group">
+          <label>Nombre completo</label>
+          <input type="text" id="clientName" placeholder="Ej: María Pérez" required>
+        </div>
+        <div class="form-group">
+          <label>Número de WhatsApp</label>
+          <input type="tel" id="clientPhone" placeholder="Ej: 300 123 4567" required>
+        </div>
+        <div class="form-group">
+          <label>¿Alguna observación? (Opcional)</label>
+          <textarea id="clientNotes" placeholder="Ej: Prefiero tonos naturales"></textarea>
+        </div>
+        
+        <div class="booking-summary" id="bookingSummary">
+          <!-- Resumen dinámico -->
+        </div>
+
+        <button type="submit" class="btn-confirm-booking">CONFIRMAR RESERVA</button>
+      </form>
+    </section>
+
+    <!-- INFO ADICIONAL -->
+    <section class="agenda-info">
+      <h3>¿Tienes alguna pregunta?</h3>
+      <p>También puedes escribirnos directamente por WhatsApp si necesitas algo especial antes de reservar.</p>
+      <a href="https://wa.me/573192757931?text=Hola,%20vi%20Estudio%20Aura%20en%20Te%20Ven.%20Tengo%20una%20pregunta." class="btn-agenda-wa" target="_blank" rel="noopener">HABLAR POR WHATSAPP</a>
+    </section>
+
+    <!-- POLÍTICAS -->
+    <section class="agenda-policies">
+      <p><strong>Política de reserva:</strong> Si necesitas cancelar o mover tu cita, avísanos con mínimo 4 horas de anticipación.</p>
+      <p><strong>Horario:</strong> Lunes a sábado, 9:00 a. m. a 7:00 p. m.</p>
+    </section>
+
+  </main>
+
+  <footer class="mini-footer" style="background: #F8FAFC; color: #94A3B8; padding-top: 32px;">
+    <p>Página y agenda creadas por <strong>Te Ven</strong></p>
+  </footer>
+
+  <a href="https://wa.me/573192757931?text=Hola,%20vi%20Estudio%20Aura%20en%20Te%20Ven.%20Quiero%20agendar%20una%20cita." class="sticky-wa-mini" style="background: #BE185D; color: #FFF;" target="_blank" rel="noopener">AGENDAR POR WHATSAPP</a>
+
+  <script>
+    let selectedService = null;
+    let selectedDate = null;
+    let selectedTime = null;
+
+    // Configurar fecha mínima como hoy
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('bookingDate').setAttribute('min', today);
+
+    function selectService(input) {
+      selectedService = {
+        name: input.value,
+        duration: input.dataset.duration,
+        price: input.dataset.price
+      };
+      // Mostrar el paso 2
+      document.getElementById('stepDateTime').style.display = 'block';
+      // Scroll suave
+      document.getElementById('stepDateTime').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Resetear la hora
+      selectedTime = null;
+      renderTimeSlots();
+    }
+
+    // ==========================================
+    // SIMULACIÓN DE CONEXIÓN CON GOOGLE CALENDAR
+    // ==========================================
+    async function renderTimeSlots() {
+      const dateInput = document.getElementById('bookingDate');
+      const timeSlotsDiv = document.getElementById('timeSlots');
+      selectedDate = dateInput.value;
+
+      if (!selectedDate) {
+        timeSlotsDiv.innerHTML = '<p class="info-text">Selecciona una fecha para ver los horarios disponibles.</p>';
+        return;
+      }
+
+      const dateObj = new Date(selectedDate + 'T00:00:00');
+      const day = dateObj.getDay(); // 0 = Domingo, 1 = Lunes...
+
+      if (day === 0) {
+        timeSlotsDiv.innerHTML = '<p class="info-text error">Lo sentimos, los domingos no atendemos. Por favor elige otro día.</p>';
+        document.getElementById('stepForm').style.display = 'none';
+        return;
+      }
+
+      // 1. Mostrar estado de carga (Simula la consulta a Google)
+      timeSlotsDiv.innerHTML = '<p class="info-text">Consultando disponibilidad en Google Calendar...</p>';
+      document.getElementById('stepForm').style.display = 'none';
+
+      // 2. Esperar 1 segundo para que se sienta real
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // 3. Lógica de simulación (Horas ocupadas aleatorias según el día)
+      const baseSlots = ['09:00 AM', '10:00 AM', '11:30 AM', '02:00 PM', '03:30 PM', '05:00 PM', '06:00 PM'];
+      
+      // Simulamos que ciertas horas ya están reservadas
+      let busySlots = [];
+      if (day === 1) busySlots = ['09:00 AM', '10:00 AM']; // Lunes ocupado en la mañana
+      if (day === 5) busySlots = ['02:00 PM', '03:30 PM']; // Viernes ocupado en la tarde
+      if (day === 6) busySlots = ['10:00 AM', '11:30 AM', '05:00 PM']; // Sábado casi lleno
+
+      // Añadimos algo de aleatoriedad para que se vea dinámico
+      baseSlots.forEach(slot => {
+        if (Math.random() > 0.8 && !busySlots.includes(slot)) {
+          busySlots.push(slot);
+        }
+      });
+
+      // 4. Renderizar los botones
+      timeSlotsDiv.innerHTML = '';
+      let availableCount = 0;
+
+      baseSlots.forEach(slot => {
+        const isBusy = busySlots.includes(slot);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.innerText = slot;
+        btn.className = 'time-slot-btn' + (isBusy ? ' busy' : '');
+        btn.disabled = isBusy;
+        
+        if (!isBusy) {
+          availableCount++;
+          btn.onclick = () => {
+            document.querySelectorAll('.time-slot-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedTime = slot;
+            showForm();
+          };
+        }
+        timeSlotsDiv.appendChild(btn);
+      });
+
+      if (availableCount === 0) {
+        timeSlotsDiv.innerHTML = '<p class="info-text error">No hay horarios disponibles para este día. Por favor elige otra fecha.</p>';
+      }
+    }
+
+    function showForm() {
+      document.getElementById('stepForm').style.display = 'block';
+      document.getElementById('stepForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      
+      // Actualizar el resumen
+      const summary = document.getElementById('bookingSummary');
+      summary.innerHTML = `
+        <strong>Resumen de tu reserva:</strong><br><br>
+        💅 ${selectedService.name}<br>
+        📅 ${selectedDate} a las ${selectedTime}<br>
+        💰 ${selectedService.price} (${selectedService.duration})
+      `;
+    }
+
+    function submitBooking(e) {
+      e.preventDefault();
+      if (!selectedService || !selectedDate || !selectedTime) {
+        alert("Por favor completa todos los pasos.");
+        return;
+      }
+
+      const name = document.getElementById('clientName').value;
+      const phone = document.getElementById('clientPhone').value;
+      const notes = document.getElementById('clientNotes').value;
+
+      // Armar el mensaje para WhatsApp
+      let msg = `Hola, quiero confirmar mi cita en Estudio Aura:%0A%0A`;
+      msg += `💅 *Servicio:* ${selectedService.name}%0A`;
+      msg += `📅 *Fecha:* ${selectedDate}%0A`;
+      msg += `🕐 *Hora:* ${selectedTime}%0A`;
+      msg += `💰 *Precio:* ${selectedService.price}%0A`;
+      msg += `👤 *Nombre:* ${name}%0A`;
+      msg += `📱 *Teléfono:* ${phone}%0A`;
+      if (notes.trim()) {
+        msg += `📝 *Observaciones:* ${notes}%0A`;
+      }
+      msg += `%0AYa he realizado la reserva en la página. Quedo atento(a) a la confirmación.`;
+
+      // Enviar a WhatsApp
+      const waNumber = "573192757931";
+      const waUrl = `https://wa.me/${waNumber}?text=${msg}`;
+      window.open(waUrl, '_blank');
+
+      // Feedback visual
+      alert("¡Reserva enviada! Te contactaremos por WhatsApp para confirmar.");
+    }
+  </script>
+
+</body>
+</html>

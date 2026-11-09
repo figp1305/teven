@@ -4,146 +4,338 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sabor de Barrio | Menú Digital</title>
-  <link rel="stylesheet" href="styles-mini.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles-menu-rappi.css">
 </head>
-<body class="menu-sabor-barrio">
+<body class="menu-rappi" style="
+  --brand-primary: #DC2626;
+  --brand-secondary: #B91C1C;
+  --brand-text: #FFFFFF;
+  --brand-light: #FEF2F2;
+">
 
-  <!-- HEADER APP -->
+  <!-- ===== HEADER STICKY ===== -->
   <header class="menu-header">
-    <div>
-      <h1>Sabor de Barrio</h1>
-      <p>Hamburguesas · Medellín</p>
-    </div>
-    <div class="cart-icon" onclick="toggleCart()">
-      🛒 <span class="cart-count" id="cartCount">0</span>
+    <div class="menu-header-inner">
+      <div class="menu-brand">
+        <div class="menu-brand-logo">
+          <span>🍔</span>
+        </div>
+        <div>
+          <h1>Sabor de Barrio</h1>
+          <p>Medellín · Comida rápida</p>
+        </div>
+      </div>
+      <button class="menu-cart-btn" onclick="toggleCart()" aria-label="Abrir carrito">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
     </div>
   </header>
 
-  <!-- HERO -->
+  <!-- ===== HERO ===== -->
   <section class="menu-hero">
+    <div class="menu-hero-img">
+      <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1200&q=80" alt="Hamburguesas Sabor de Barrio">
+    </div>
     <div class="menu-hero-content">
-      <h2>Disfruta sin salir de casa</h2>
-      <p>Pedidos en Medellín y sectores cercanos.</p>
-      <a href="#menu-productos" class="btn-menu">VER MENÚ</a>
+      <span class="menu-hero-badge">🛵 Domicilio disponible</span>
+      <h2>Hamburguesas artesanales a tu puerta</h2>
+      <p>Pedidos en Medellín · Laureles y sectores cercanos</p>
+      <div class="menu-hero-info">
+        <span>⏱️ 30-45 min</span>
+        <span>💵 Pago contra entrega</span>
+      </div>
     </div>
   </section>
 
-  <!-- CATEGORÍAS (Sticky) -->
+  <!-- ===== CATEGORÍAS STICKY ===== -->
   <nav class="menu-categories">
-    <a href="#hamburguesas" class="cat-link active">Hamburguesas</a>
-    <a href="#perros" class="cat-link">Perros Calientes</a>
-    <a href="#combos" class="cat-link">Combos</a>
-    <a href="#bebidas" class="cat-link">Bebidas</a>
+    <a href="#hamburguesas" class="menu-cat-pill active" onclick="setActiveCat(this)">🍔 Hamburguesas</a>
+    <a href="#perros" class="menu-cat-pill" onclick="setActiveCat(this)">🌭 Perros</a>
+    <a href="#combos" class="menu-cat-pill" onclick="setActiveCat(this)">🍟 Combos</a>
+    <a href="#bebidas" class="menu-cat-pill" onclick="setActiveCat(this)">🥤 Bebidas</a>
+    <a href="#adiciones" class="menu-cat-pill" onclick="setActiveCat(this)">➕ Adiciones</a>
   </nav>
 
-  <!-- PRODUCTOS -->
-  <main class="menu-productos" id="menu-productos">
-    
-    <!-- Categoría: Hamburguesas -->
-    <h3 id="hamburguesas" class="menu-cat-title">Hamburguesas</h3>
-    <div class="productos-grid">
-      
-      <div class="producto-card">
-        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=200&q=80" alt="Hamburguesa Clásica">
-        <div class="producto-info">
-          <h4>Hamburguesa Clásica</h4>
+  <!-- ===== PRODUCTOS ===== -->
+  <main class="menu-products">
+
+    <!-- HAMBURGUESAS -->
+    <section id="hamburguesas" class="menu-section">
+      <h2 class="menu-section-title">Hamburguesas</h2>
+
+      <article class="product-card">
+        <div class="product-img">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=300&q=80" alt="Hamburguesa Clásica">
+        </div>
+        <div class="product-info">
+          <h3>Hamburguesa Clásica</h3>
           <p>Carne, queso, lechuga, tomate y salsa de la casa.</p>
-          <span class="producto-precio">$18.000</span>
-          <button class="btn-agregar" onclick="addToCart('Hamburguesa Clásica', 18000)">+ Agregar</button>
+          <div class="product-footer">
+            <span class="product-price">$18.000</span>
+            <button class="btn-add" onclick="addToCart('Hamburguesa Clásica', 18000)">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Agregar
+            </button>
+          </div>
         </div>
-      </div>
+      </article>
 
-      <div class="producto-card">
-        <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eb50c4e?auto=format&fit=crop&w=200&q=80" alt="Hamburguesa Especial">
-        <div class="producto-info">
-          <h4>Hamburguesa Especial</h4>
+      <article class="product-card">
+        <div class="product-img">
+          <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eb50c4e?auto=format&fit=crop&w=300&q=80" alt="Hamburguesa Especial">
+        </div>
+        <div class="product-info">
+          <h3>Hamburguesa Especial</h3>
           <p>Carne, doble queso, tocineta, cebolla caramelizada.</p>
-          <span class="producto-precio">$25.000</span>
-          <button class="btn-agregar" onclick="addToCart('Hamburguesa Especial', 25000)">+ Agregar</button>
+          <div class="product-footer">
+            <span class="product-price">$25.000</span>
+            <button class="btn-add" onclick="addToCart('Hamburguesa Especial', 25000)">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Agregar
+            </button>
+          </div>
         </div>
-      </div>
+      </article>
 
-    </div>
+    </section>
 
-    <!-- Categoría: Combos -->
-    <h3 id="combos" class="menu-cat-title">Combos</h3>
-    <div class="productos-grid">
-      
-      <div class="producto-card">
-        <img src="https://images.unsplash.com/photo-1610614819513-58e34989848b?auto=format&fit=crop&w=200&q=80" alt="Combo Clásico">
-        <div class="producto-info">
-          <h4>Combo Clásico</h4>
-          <p>Hamburguesa clásica, papas y bebida.</p>
-          <span class="producto-precio">$25.000</span>
-          <button class="btn-agregar" onclick="addToCart('Combo Clásico', 25000)">+ Agregar</button>
+    <!-- PERROS -->
+    <section id="perros" class="menu-section">
+      <h2 class="menu-section-title">Perros Calientes</h2>
+
+      <article class="product-card">
+        <div class="product-img">
+          <img src="https://images.unsplash.com/photo-1612392062126-5c3c5b0b8b56?auto=format&fit=crop&w=300&q=80" alt="Perro Sencillo">
         </div>
-      </div>
-
-    </div>
-
-    <!-- Categoría: Bebidas -->
-    <h3 id="bebidas" class="menu-cat-title">Bebidas</h3>
-    <div class="productos-grid">
-      
-      <div class="producto-card">
-        <img src="https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?auto=format&fit=crop&w=200&q=80" alt="Gaseosa">
-        <div class="producto-info">
-          <h4>Gaseosa Personal</h4>
-          <p>Gaseosa personal.</p>
-          <span class="producto-precio">$5.000</span>
-          <button class="btn-agregar" onclick="addToCart('Gaseosa', 5000)">+ Agregar</button>
+        <div class="product-info">
+          <h3>Perro Sencillo</h3>
+          <p>Salchicha, queso, papas ripio y salsas al gusto.</p>
+          <div class="product-footer">
+            <span class="product-price">$12.000</span>
+            <button class="btn-add" onclick="addToCart('Perro Sencillo', 12000)">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Agregar
+            </button>
+          </div>
         </div>
-      </div>
+      </article>
 
-    </div>
+    </section>
+
+    <!-- COMBOS -->
+    <section id="combos" class="menu-section">
+      <h2 class="menu-section-title">Combos</h2>
+
+      <article class="product-card">
+        <div class="product-img">
+          <img src="https://images.unsplash.com/photo-1610614819513-58e34989848b?auto=format&fit=crop&w=300&q=80" alt="Combo Clásico">
+        </div>
+        <div class="product-info">
+          <h3>Combo Clásico</h3>
+          <p>Hamburguesa clásica + papas + gaseosa.</p>
+          <div class="product-footer">
+            <span class="product-price">$25.000</span>
+            <button class="btn-add" onclick="addToCart('Combo Clásico', 25000)">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Agregar
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="product-card">
+        <div class="product-img">
+          <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?auto=format&fit=crop&w=300&q=80" alt="Combo Doble">
+        </div>
+        <div class="product-info">
+          <h3>Combo Doble</h3>
+          <p>Hamburguesa especial + papas + gaseosa.</p>
+          <div class="product-footer">
+            <span class="product-price">$32.000</span>
+            <button class="btn-add" onclick="addToCart('Combo Doble', 32000)">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Agregar
+            </button>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- BEBIDAS -->
+    <section id="bebidas" class="menu-section">
+      <h2 class="menu-section-title">Bebidas</h2>
+
+      <article class="product-card">
+        <div class="product-img">
+          <img src="https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?auto=format&fit=crop&w=300&q=80" alt="Gaseosa Personal">
+        </div>
+        <div class="product-info">
+          <h3>Gaseosa Personal</h3>
+          <p>Gaseosa personal 400ml.</p>
+          <div class="product-footer">
+            <span class="product-price">$5.000</span>
+            <button class="btn-add" onclick="addToCart('Gaseosa Personal', 5000)">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Agregar
+            </button>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- ADICIONES -->
+    <section id="adiciones" class="menu-section">
+      <h2 class="menu-section-title">Adiciones</h2>
+
+      <article class="product-card">
+        <div class="product-img">
+          <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=300&q=80" alt="Papas Fritas">
+        </div>
+        <div class="product-info">
+          <h3>Papas Fritas</h3>
+          <p>Porción de papas a la francesa.</p>
+          <div class="product-footer">
+            <span class="product-price">$8.000</span>
+            <button class="btn-add" onclick="addToCart('Papas Fritas', 8000)">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Agregar
+            </button>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
   </main>
 
-  <!-- MODAL DEL CARRITO (Bottom Sheet) -->
+  <!-- ===== INFO DEL NEGOCIO ===== -->
+  <section class="menu-info-footer">
+    <div class="menu-info-card">
+      <p><strong>🕒 Horario:</strong> Martes a Domingo · 5:00 pm - 11:00 pm</p>
+      <p><strong>📍 Zona:</strong> Laureles y sectores cercanos</p>
+      <p><strong>💵 Pagos:</strong> Efectivo, Transferencia, Tarjeta</p>
+      <p><strong>📞 Contacto:</strong> +57 319 275 7931</p>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER LEGAL ===== -->
+  <footer class="menu-footer">
+    <p class="menu-footer-legal">La atención, disponibilidad, precios y condiciones del servicio dependen directamente del negocio.</p>
+    <p class="menu-footer-brand">Menú digital creado por <strong>Te Ven</strong> · Publicidad para negocios</p>
+  </footer>
+
+  <!-- ===== BOTÓN FLOTANTE CARRITO (MÓVIL) ===== -->
+  <button class="floating-cart-btn" id="floatingCart" onclick="toggleCart()">
+    <span class="floating-cart-icon">🛒</span>
+    <span class="floating-cart-info">
+      <span class="floating-cart-count" id="floatingCount">0 productos</span>
+      <span class="floating-cart-total" id="floatingTotal">$0</span>
+    </span>
+    <span class="floating-cart-arrow">→</span>
+  </button>
+
+  <!-- ===== MODAL CARRITO ===== -->
   <div class="cart-modal-overlay" id="cartModal" onclick="toggleCart()">
     <div class="cart-modal" onclick="event.stopPropagation()">
-      <button class="close-cart" onclick="toggleCart()">✕</button>
-      <h3>Tu Pedido</h3>
-      
-      <div class="cart-items-list" id="cartItemsList">
-        <p class="empty-cart-msg">No has agregado productos aún.</p>
+
+      <!-- Header del modal -->
+      <div class="cart-modal-header">
+        <div>
+          <h3>Tu Pedido</h3>
+          <p class="cart-modal-subtitle" id="cartItemCount">0 productos</p>
+        </div>
+        <button class="cart-close" onclick="toggleCart()" aria-label="Cerrar">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
       </div>
 
-      <div class="cart-total">
-        <strong>Total:</strong> <span id="cartTotal">$0</span>
+      <!-- Lista de items -->
+      <div class="cart-items" id="cartItems">
+        <p class="cart-empty">Aún no has agregado productos</p>
       </div>
 
-      <form class="checkout-form" id="checkoutForm" onsubmit="sendOrder(event)">
-        <input type="text" id="custName" placeholder="Tu nombre completo" required>
-        <input type="text" id="custAddress" placeholder="Dirección o barrio" required>
-        <select id="custPayment">
-          <option value="Efectivo">Pago en efectivo</option>
-          <option value="Transferencia">Transferencia / Nequi</option>
-          <option value="Tarjeta">Tarjeta (contra entrega)</option>
-        </select>
-        <textarea id="custNotes" placeholder="Observaciones (opcional)"></textarea>
-        <button type="submit" class="btn-send-order">ENVIAR PEDIDO POR WHATSAPP</button>
-      </form>
+      <!-- Formulario de domicilio -->
+      <div class="cart-form-section" id="cartFormSection">
+        <h4>Datos de entrega</h4>
+
+        <div class="cart-form-group">
+          <label>Nombre completo *</label>
+          <input type="text" id="custName" placeholder="Ej: María Pérez" required>
+        </div>
+
+        <div class="cart-form-row">
+          <div class="cart-form-group">
+            <label>Teléfono *</label>
+            <input type="tel" id="custPhone" placeholder="300 123 4567" required>
+          </div>
+          <div class="cart-form-group">
+            <label>Barrio *</label>
+            <input type="text" id="custNeighborhood" placeholder="Ej: Laureles" required>
+          </div>
+        </div>
+
+        <div class="cart-form-group">
+          <label>Dirección completa *</label>
+          <input type="text" id="custAddress" placeholder="Cra. 70 #45-12, apto 301" required>
+        </div>
+
+        <div class="cart-form-group">
+          <label>Método de pago</label>
+          <select id="custPayment">
+            <option value="Efectivo">Efectivo</option>
+            <option value="Transferencia Nequi">Transferencia / Nequi</option>
+            <option value="Tarjeta contra entrega">Tarjeta contra entrega</option>
+          </select>
+        </div>
+
+        <div class="cart-form-group">
+          <label>Observaciones (opcional)</label>
+          <textarea id="custNotes" placeholder="Ej: Sin cebolla, tocar el timbre 2 veces"></textarea>
+        </div>
+      </div>
+
+      <!-- Resumen del pedido -->
+      <div class="cart-summary">
+        <div class="cart-summary-row">
+          <span>Subtotal</span>
+          <span id="cartSubtotal">$0</span>
+        </div>
+        <div class="cart-summary-row">
+          <span>Domicilio</span>
+          <span id="cartDelivery">$5.000</span>
+        </div>
+        <div class="cart-summary-row cart-summary-total">
+          <span>Total</span>
+          <span id="cartTotal">$5.000</span>
+        </div>
+      </div>
+
+      <!-- Botón enviar -->
+      <button class="cart-send-btn" onclick="sendOrder()">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        ENVIAR PEDIDO POR WHATSAPP
+      </button>
+
     </div>
   </div>
 
-  <!-- INFO DEL NEGOCIO -->
-  <section class="menu-footer-info">
-    <p><strong>Horario:</strong> Martes a domingo, 5:00 p. m. a 11:00 p. m.</p>
-    <p><strong>Zona:</strong> Laureles y sectores cercanos</p>
-    <p><strong>Pagos:</strong> Efectivo, Transferencia, Tarjeta</p>
-  </section>
-
-  <footer class="mini-footer">
-    <p>Menú digital creado por <strong>Te Ven</strong>.</p>
-  </footer>
-
   <script>
+    // ===== ESTADO DEL CARRITO =====
     let cart = [];
+    const DELIVERY_FEE = 5000;
+    const WA_NUMBER = "573192757931";
 
-    function toggleCart() {
-      document.getElementById('cartModal').classList.toggle('active');
-    }
-
+    // ===== AGREGAR AL CARRITO =====
     function addToCart(name, price) {
       const existing = cart.find(item => item.name === name);
       if (existing) {
@@ -152,80 +344,178 @@
         cart.push({ name, price, qty: 1 });
       }
       updateCartUI();
-      document.getElementById('cartCount').style.transform = 'scale(1.5)';
-      setTimeout(() => document.getElementById('cartCount').style.transform = 'scale(1)', 200);
+
+      // Feedback visual
+      const badge = document.getElementById('cartBadge');
+      badge.classList.add('bounce');
+      setTimeout(() => badge.classList.remove('bounce'), 300);
     }
 
-    function updateCartUI() {
-      const list = document.getElementById('cartItemsList');
-      const countEl = document.getElementById('cartCount');
-      const totalEl = document.getElementById('cartTotal');
-      
-      list.innerHTML = '';
-      let total = 0;
-      let totalItems = 0;
-
-      if (cart.length === 0) {
-        list.innerHTML = '<p class="empty-cart-msg">No has agregado productos aún.</p>';
-      } else {
-        cart.forEach((item, index) => {
-          total += item.price * item.qty;
-          totalItems += item.qty;
-          list.innerHTML += `
-            <div class="cart-item">
-              <div>
-                <strong>${item.qty}x ${item.name}</strong>
-                <span>$${(item.price * item.qty).toLocaleString('es-CO')}</span>
-              </div>
-              <button type="button" onclick="removeFromCart(${index})" style="background:none; border:none; color:#EF4444; cursor:pointer; font-weight:bold; font-size:1.2rem;">✕</button>
-            </div>
-          `;
-        });
-      }
-
-      countEl.innerText = totalItems;
-      totalEl.innerText = '$' + total.toLocaleString('es-CO');
-    }
-
-    function removeFromCart(index) {
-      if (cart[index].qty > 1) {
-        cart[index].qty--;
-      } else {
-        cart.splice(index, 1);
-      }
+    // ===== ELIMINAR ITEM =====
+    function removeItem(index) {
+      cart.splice(index, 1);
       updateCartUI();
     }
 
-    function sendOrder(e) {
-      e.preventDefault();
+    // ===== CAMBIAR CANTIDAD =====
+    function changeQty(index, delta) {
+      if (cart[index].qty + delta <= 0) {
+        removeItem(index);
+      } else {
+        cart[index].qty += delta;
+        updateCartUI();
+      }
+    }
+
+    // ===== ACTUALIZAR UI =====
+    function updateCartUI() {
+      const cartItemsEl = document.getElementById('cartItems');
+      const badge = document.getElementById('cartBadge');
+      const floatingBtn = document.getElementById('floatingCart');
+      const floatingCount = document.getElementById('floatingCount');
+      const floatingTotal = document.getElementById('floatingTotal');
+      const cartItemCount = document.getElementById('cartItemCount');
+
+      let subtotal = 0;
+      let totalQty = 0;
+
       if (cart.length === 0) {
-        alert("Agrega al menos un producto a tu pedido.");
+        cartItemsEl.innerHTML = '<p class="cart-empty">Aún no has agregado productos</p>';
+        badge.style.display = 'none';
+        floatingBtn.classList.remove('visible');
+        document.getElementById('cartFormSection').style.display = 'none';
+        document.getElementById('cartSubtotal').textContent = '$0';
+        document.getElementById('cartDelivery').textContent = '$0';
+        document.getElementById('cartTotal').textContent = '$0';
         return;
       }
 
-      const name = document.getElementById('custName').value;
-      const address = document.getElementById('custAddress').value;
-      const payment = document.getElementById('custPayment').value;
-      const notes = document.getElementById('custNotes').value;
+      document.getElementById('cartFormSection').style.display = 'block';
 
-      let total = 0;
-      let msg = "Hola, quiero realizar este pedido en Sabor de Barrio:%0A%0A";
-      
+      let itemsHTML = '';
+      cart.forEach((item, index) => {
+        subtotal += item.price * item.qty;
+        totalQty += item.qty;
+        itemsHTML += `
+          <div class="cart-item">
+            <div class="cart-item-info">
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-price">$${(item.price * item.qty).toLocaleString('es-CO')}</div>
+            </div>
+            <div class="cart-item-controls">
+              <button class="cart-qty-btn" onclick="changeQty(${index}, -1)">−</button>
+              <span class="cart-qty-value">${item.qty}</span>
+              <button class="cart-qty-btn" onclick="changeQty(${index}, 1)">+</button>
+            </div>
+          </div>
+        `;
+      });
+      cartItemsEl.innerHTML = itemsHTML;
+
+      // Badge del header
+      badge.textContent = totalQty;
+      badge.style.display = 'flex';
+
+      // Botón flotante
+      floatingBtn.classList.add('visible');
+      floatingCount.textContent = `${totalQty} ${totalQty === 1 ? 'producto' : 'productos'}`;
+      floatingTotal.textContent = `$${subtotal.toLocaleString('es-CO')}`;
+
+      // Subtítulo del modal
+      cartItemCount.textContent = `${totalQty} ${totalQty === 1 ? 'producto' : 'productos'}`;
+
+      // Totales
+      const delivery = DELIVERY_FEE;
+      const total = subtotal + delivery;
+      document.getElementById('cartSubtotal').textContent = `$${subtotal.toLocaleString('es-CO')}`;
+      document.getElementById('cartDelivery').textContent = `$${delivery.toLocaleString('es-CO')}`;
+      document.getElementById('cartTotal').textContent = `$${total.toLocaleString('es-CO')}`;
+    }
+
+    // ===== ABRIR/CERRAR CARRITO =====
+    function toggleCart() {
+      document.getElementById('cartModal').classList.toggle('active');
+      document.body.style.overflow = document.getElementById('cartModal').classList.contains('active') ? 'hidden' : '';
+    }
+
+    // ===== ENVIAR PEDIDO A WHATSAPP =====
+    function sendOrder() {
+      if (cart.length === 0) {
+        alert('Agrega al menos un producto a tu pedido.');
+        return;
+      }
+
+      const name = document.getElementById('custName').value.trim();
+      const phone = document.getElementById('custPhone').value.trim();
+      const neighborhood = document.getElementById('custNeighborhood').value.trim();
+      const address = document.getElementById('custAddress').value.trim();
+      const payment = document.getElementById('custPayment').value;
+      const notes = document.getElementById('custNotes').value.trim();
+
+      if (!name || !phone || !neighborhood || !address) {
+        alert('Por favor completa todos los campos obligatorios (*).');
+        return;
+      }
+
+      let subtotal = 0;
+      let msg = `Hola, quiero hacer un pedido en Sabor de Barrio:%0A%0A`;
+      msg += `🍔 *PEDIDO:*%0A`;
+
       cart.forEach(item => {
-        msg += `${item.qty} x ${item.name} - $${(item.price * item.qty).toLocaleString('es-CO')}%0A`;
-        total += item.price * item.qty;
+        msg += `• ${item.qty} x ${item.name} — $${(item.price * item.qty).toLocaleString('es-CO')}%0A`;
+        subtotal += item.price * item.qty;
       });
 
-      msg += `%0ASubtotal aproximado: $${total.toLocaleString('es-CO')}%0A%0A`;
-      msg += `Nombre: ${name}%0A`;
-      msg += `Dirección: ${address}%0A`;
-      msg += `Método de pago: ${payment}%0A`;
-      if(notes.trim()) msg += `Observaciones: ${notes}%0A`;
+      const total = subtotal + DELIVERY_FEE;
 
-      const waNumber = "573192757931";
-      const waUrl = `https://wa.me/${waNumber}?text=${msg}`;
-      window.open(waUrl, '_blank');
+      msg += `%0A💰 *RESUMEN:*%0A`;
+      msg += `Subtotal: $${subtotal.toLocaleString('es-CO')}%0A`;
+      msg += `Domicilio: $${DELIVERY_FEE.toLocaleString('es-CO')}%0A`;
+      msg += `*Total aproximado: $${total.toLocaleString('es-CO')}*%0A%0A`;
+
+      msg += `📍 *DATOS DE ENTREGA:*%0A`;
+      msg += `Nombre: ${name}%0A`;
+      msg += `Teléfono: ${phone}%0A`;
+      msg += `Barrio: ${neighborhood}%0A`;
+      msg += `Dirección: ${address}%0A`;
+      msg += `Pago: ${payment}%0A`;
+
+      if (notes) {
+        msg += `Observaciones: ${notes}%0A`;
+      }
+
+      msg += `%0A¡Gracias! Quedo pendiente de la confirmación.`;
+
+      const url = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+      window.open(url, '_blank');
     }
+
+    // ===== CATEGORÍAS ACTIVAS =====
+    function setActiveCat(el) {
+      document.querySelectorAll('.menu-cat-pill').forEach(pill => pill.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    // ===== SCROLL SPY (categoría activa al hacer scroll) =====
+    const sections = document.querySelectorAll('.menu-section');
+    const pills = document.querySelectorAll('.menu-cat-pill');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 200;
+        if (window.scrollY >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      pills.forEach(pill => {
+        pill.classList.remove('active');
+        if (pill.getAttribute('href') === '#' + current) {
+          pill.classList.add('active');
+        }
+      });
+    }, { passive: true });
   </script>
 
 </body>

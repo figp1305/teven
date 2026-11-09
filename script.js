@@ -1,14 +1,13 @@
 // ============================================================
-// TE VEN — Landing Page
+// TE VEN — Landing Page JS
 // ============================================================
 
 const WHATSAPP_NUMBER = "573192757931";
 
 const WA_MESSAGES = {
-  general: "Hola, quiero anunciar mi negocio con Te Ven. Me gustaría conocer el plan más adecuado.",
+  general: "Hola, quiero anunciar mi negocio con Te Ven. Me gustaría conocer los planes.",
   basico: "Hola, me interesa el plan Te Ven Básico. Quiero anunciar mi negocio.",
-  diseno: "Hola, me interesa el plan Te Ven Diseño. Necesito ayuda con la imagen de mi anuncio.",
-  video: "Hola, me interesa el plan Te Ven Video. Quiero promocionar mi negocio con un video.",
+  plus: "Hola, me interesa el plan Te Ven Plus. Quiero una mini landing personalizada.",
 };
 
 function buildWaLink(type = "general") {
@@ -22,7 +21,7 @@ function trackEvent(eventName) {
   console.log(`[TeVen] evento: ${eventName}`);
 }
 
-// 1. WhatsApp Links
+// 1. Enlaces de WhatsApp
 document.querySelectorAll("[data-wa]").forEach((el) => {
   const type = el.getAttribute("data-wa") || "general";
   el.setAttribute("href", buildWaLink(type));
@@ -48,38 +47,88 @@ if (hamburger && navLinks) {
       hamburger.setAttribute("aria-expanded", "false");
     });
   });
-  document.addEventListener("click", (e) => {
-    if (navLinks.classList.contains("open") && !navLinks.contains(e.target) && !hamburger.contains(e.target)) {
-      navLinks.classList.remove("open");
-      hamburger.classList.remove("active");
-      hamburger.setAttribute("aria-expanded", "false");
-    }
-  });
 }
 
-// 3. Navbar Scroll
-const navbar = document.getElementById("navbar");
-window.addEventListener("scroll", () => {
-  if (navbar) navbar.classList.toggle("scrolled", window.scrollY > 40);
-}, { passive: true });
+// 3. Función genérica para el carrusel de ejemplos
+function setupSlider(sliderId, prevBtnId, nextBtnId) {
+  const slider = document.getElementById(sliderId);
+  const btnPrev = document.getElementById(prevBtnId);
+  const btnNext = document.getElementById(nextBtnId);
 
-// 4. Eventos Adicionales
+  if (!slider || !btnPrev || !btnNext) return;
+
+  const getScrollAmount = () => {
+    const card = slider.querySelector(".card");
+    if (card) {
+      const style = window.getComputedStyle(slider);
+      const gap = parseInt(style.gap) || 24;
+      return card.offsetWidth + gap;
+    }
+    return 320;
+  };
+
+  btnNext.addEventListener("click", () => {
+    slider.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
+  });
+
+  btnPrev.addEventListener("click", () => {
+    slider.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
+  });
+
+  const updateButtons = () => {
+    const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+    if (slider.scrollLeft <= 5) {
+      btnPrev.style.opacity = "0.3";
+      btnPrev.style.pointerEvents = "none";
+    } else {
+      btnPrev.style.opacity = "1";
+      btnPrev.style.pointerEvents = "auto";
+    }
+    if (slider.scrollLeft >= maxScrollLeft - 5) {
+      btnNext.style.opacity = "0.3";
+      btnNext.style.pointerEvents = "none";
+    } else {
+      btnNext.style.opacity = "1";
+      btnNext.style.pointerEvents = "auto";
+    }
+  };
+
+  updateButtons();
+  slider.addEventListener("scroll", updateButtons);
+}
+
+// Inicializar SOLO el carrusel de ejemplos (los otros son grids)
+setupSlider("sliderEjemplos", "btnPrev", "btnNext");
+
+// 4. Arrastre con mouse para sliders (ejemplos y servicios en móvil)
+document.querySelectorAll(".slider-track, .services-grid-fixed").forEach((slider) => {
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  slider.addEventListener("mousedown", (e) => {
+    if (window.innerWidth >= 900) return; // No activar drag en desktop grid
+    isDown = true;
+    slider.style.cursor = "grabbing";
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+  });
+  slider.addEventListener("mouseleave", () => { isDown = false; slider.style.cursor = "grab"; });
+  slider.addEventListener("mouseup", () => { isDown = false; slider.style.cursor = "grab"; });
+  slider.addEventListener("mousemove", (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 2;
+    slider.scrollLeft = scrollLeft - walk;
+  });
+  slider.style.cursor = "grab";
+});
+
+// 5. Eventos adicionales
 document.querySelectorAll('[data-event="click_ver_planes"]').forEach((el) => {
   el.addEventListener("click", () => trackEvent("click_ver_planes"));
 });
-
-const plansSection = document.getElementById("planes");
-if (plansSection && "IntersectionObserver" in window) {
-  const plansObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        trackEvent("scroll_planes");
-        plansObserver.disconnect();
-      }
-    });
-  }, { threshold: 0.4 });
-  plansObserver.observe(plansSection);
-}
 
 document.querySelectorAll(".faq-list details").forEach((detail) => {
   detail.addEventListener("toggle", () => {
@@ -87,122 +136,74 @@ document.querySelectorAll(".faq-list details").forEach((detail) => {
   });
 });
 
-// 5. Año dinámico
+// 6. Año dinámico
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-// 6. Fallback Video
-const heroVideo = document.querySelector(".hero-video");
-if (heroVideo) {
-  const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  const saveData = conn && conn.saveData;
-  const slowConn = conn && /2g/.test(conn.effectiveType || "");
-  if (saveData || slowConn) {
-    heroVideo.removeAttribute("autoplay");
-    heroVideo.pause();
-    heroVideo.style.display = "none";
+// ============================================================
+// 7. TOGGLE DE PRECIOS (Semana vs Mes)
+// ============================================================
+const toggleWeek = document.getElementById('toggleWeek');
+const toggleMonth = document.getElementById('toggleMonth');
+
+if (toggleWeek && toggleMonth) {
+  const updatePrices = (period) => {
+    // Actualizar botones activos
+    document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+    if (period === 'week') toggleWeek.classList.add('active');
+    else toggleMonth.classList.add('active');
+
+    // Actualizar los precios en cada tarjeta
+    document.querySelectorAll('.plan-price-display').forEach(display => {
+      const priceEl = display.querySelector('.plan-price');
+      const periodEl = display.querySelector('.plan-period');
+      const saveEl = display.querySelector('.plan-save');
+
+      if (period === 'week') {
+        priceEl.textContent = priceEl.dataset.priceWeek;
+        periodEl.textContent = periodEl.dataset.periodWeek;
+        saveEl.textContent = '';
+        saveEl.style.display = 'none';
+      } else {
+        priceEl.textContent = priceEl.dataset.priceMonth;
+        periodEl.textContent = periodEl.dataset.periodMonth;
+        saveEl.textContent = saveEl.dataset.saveMonth;
+        saveEl.style.display = 'inline-block';
+      }
+    });
+
+    // Mostrar/ocultar las features exclusivas del mes
+    document.querySelectorAll('.feature-month-only').forEach(feat => {
+      feat.style.display = period === 'month' ? 'list-item' : 'none';
+    });
+  };
+
+  toggleWeek.addEventListener('click', () => updatePrices('week'));
+  toggleMonth.addEventListener('click', () => updatePrices('month'));
+}
+
+// ============================================================
+// 8. MODAL TÉRMINOS Y CONDICIONES
+// ============================================================
+const termsModal = document.getElementById('termsModal');
+
+function openTerms() {
+  if (termsModal) {
+    termsModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
   }
 }
 
-// 7. Slider Ejemplos (Arrastre con mouse en Desktop)
-const slider = document.getElementById("sliderEjemplos");
-if (slider) {
-  let isDown = false;
-  let startX;
-  let scrollLeft;
-
-  slider.addEventListener("mousedown", (e) => {
-    isDown = true;
-    slider.style.cursor = "grabbing";
-    startX = e.pageX - slider.offsetLeft;
-    scrollLeft = slider.scrollLeft;
-  });
-  slider.addEventListener("mouseleave", () => {
-    isDown = false;
-    slider.style.cursor = "grab";
-  });
-  slider.addEventListener("mouseup", () => {
-    isDown = false;
-    slider.style.cursor = "grab";
-  });
-  slider.addEventListener("mousemove", (e) => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - slider.offsetLeft;
-    const walk = (x - startX) * 2; // velocidad de scroll
-    slider.scrollLeft = scrollLeft - walk;
-  });
-  slider.style.cursor = "grab";
+function closeTerms() {
+  if (termsModal) {
+    termsModal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
 }
 
-// 8. Reduced Motion
-if (window.matchMedia("(prefers-reduced-motion: reduce)").matches && heroVideo) {
-  heroVideo.removeAttribute("autoplay");
-  heroVideo.pause();
-}
-
-// ============================================================
-// 9. CONTROLES DEL SLIDER DE EJEMPLOS (FLECHAS)
-// ============================================================
-document.addEventListener("DOMContentLoaded", () => {
-  const sliderEjemplos = document.getElementById('sliderEjemplos');
-  const btnPrev = document.getElementById('btnPrev');
-  const btnNext = document.getElementById('btnNext');
-
-  if (sliderEjemplos && btnPrev && btnNext) {
-    
-    // Función para calcular cuánto desplazar (ancho de tarjeta + gap)
-    const getScrollAmount = () => {
-      const card = sliderEjemplos.querySelector('.example-card');
-      if (card) {
-        const style = window.getComputedStyle(sliderEjemplos);
-        const gap = parseInt(style.gap) || 20; // El gap definido en CSS
-        return card.offsetWidth + gap;
-      }
-      return 300; // Fallback
-    };
-
-    // Botón Siguiente (Derecha)
-    btnNext.addEventListener('click', () => {
-      sliderEjemplos.scrollBy({
-        left: getScrollAmount(),
-        behavior: 'smooth'
-      });
-    });
-
-    // Botón Anterior (Izquierda)
-    btnPrev.addEventListener('click', () => {
-      sliderEjemplos.scrollBy({
-        left: -getScrollAmount(),
-        behavior: 'smooth'
-      });
-    });
-
-    // Ocultar flechas si no hay más contenido hacia ese lado
-    const updateButtons = () => {
-      const maxScrollLeft = sliderEjemplos.scrollWidth - sliderEjemplos.clientWidth;
-      
-      // Si estamos al inicio, desactivamos el botón izquierdo
-      if (sliderEjemplos.scrollLeft <= 5) {
-        btnPrev.style.opacity = '0.3';
-        btnPrev.style.pointerEvents = 'none';
-      } else {
-        btnPrev.style.opacity = '1';
-        btnPrev.style.pointerEvents = 'auto';
-      }
-
-      // Si estamos al final, desactivamos el botón derecho
-      if (sliderEjemplos.scrollLeft >= maxScrollLeft - 5) {
-        btnNext.style.opacity = '0.3';
-        btnNext.style.pointerEvents = 'none';
-      } else {
-        btnNext.style.opacity = '1';
-        btnNext.style.pointerEvents = 'auto';
-      }
-    };
-
-    // Ejecutar al cargar y cada vez que se haga scroll en el slider
-    updateButtons();
-    sliderEjemplos.addEventListener('scroll', updateButtons);
+// Cerrar con Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && termsModal && termsModal.classList.contains('active')) {
+    closeTerms();
   }
 });
